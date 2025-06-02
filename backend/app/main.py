@@ -1,7 +1,9 @@
 import logging
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from pathlib import Path
 
 from app.api.routes import auth_router, users_router, convert_router
 from app.config import ALLOWED_ORIGINS, APP_NAME
@@ -30,6 +32,14 @@ app.add_middleware(
 app.include_router(auth_router, prefix=f"/auth", tags=["authentication"])
 app.include_router(users_router, prefix=f"/users", tags=["users"])
 app.include_router(convert_router, prefix=f"/convert", tags=["conversions"])
+
+
+frontend_path = Path(__file__).resolve().parent.parent / "frontend" / "dist"
+app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
+
+@app.get("/")
+def serve_spa():
+    return FileResponse("frontend/dist/index.html")
 
 # Include routers with API versioning to match OAuth2 scheme
 # app.include_router(auth_router, prefix="/api/v1/auth", tags=["authentication"])
