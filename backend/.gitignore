@@ -3,3 +3,6 @@ temp
 .env
 app.db
 __pycache__
+
+Dockerfile
+.dockerignore
