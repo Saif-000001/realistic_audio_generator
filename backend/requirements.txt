@@ -8,9 +8,9 @@ python-multipart==0.0.6
 easyocr==1.7.1              
 pymupdf==1.26.0            
 langdetect==1.0.9           
-torch==2.3.0+cpu
-torchaudio==2.3.0+cpu
-torchvision==0.18.0+cpu                
+torch==2.3.0
+torchaudio==2.3.0
+torchvision==0.18.0               
 Pillow==10.0.1              
 python-dotenv==1.0.0        
 bcrypt==4.0.1               
