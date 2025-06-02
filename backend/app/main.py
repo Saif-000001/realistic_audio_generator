@@ -1,5 +1,6 @@
 import logging
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import auth_router, users_router, convert_router
@@ -29,3 +30,12 @@ app.add_middleware(
 app.include_router(auth_router, prefix=f"/auth", tags=["authentication"])
 app.include_router(users_router, prefix=f"/users", tags=["users"])
 app.include_router(convert_router, prefix=f"/convert", tags=["conversions"])
+
+# Include routers with API versioning to match OAuth2 scheme
+# app.include_router(auth_router, prefix="/api/v1/auth", tags=["authentication"])
+# app.include_router(users_router, prefix="/api/v1/users", tags=["users"])
+# app.include_router(convert_router, prefix="/api/v1/convert", tags=["conversions"])
+
+# @app.get("/", response_class=HTMLResponse)
+# def root():
+#     return open("../frontend/dist/index.html", "r").read()

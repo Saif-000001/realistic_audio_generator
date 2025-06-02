@@ -1,0 +1,30 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - sqlite_data:/app/data
+      - uploads_data:/app/uploads
+      - temp_data:/app/temp
+      - output_data:/app/output
+    environment:
+      DATABASE_URL: sqlite:///./data/app.db
+      ALLOWED_ORIGINS: "http://localhost:3000"
+    env_file:
+      - ./backend/.env
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_URL: "http://localhost:8000"
+    depends_on:
+      - backend
+
+volumes:
+  sqlite_data:
+  uploads_data:
+  temp_data:
+  output_data:

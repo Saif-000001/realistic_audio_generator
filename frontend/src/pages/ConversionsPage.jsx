@@ -1,4 +1,3 @@
-// src/pages/ConversionsPage.jsx
 import { useState } from 'react';
 import ConversionList from '../components/Conversion/ConversionList';
 import ConversionForm from '../components/Conversion/ConversionForm';
@@ -9,7 +8,7 @@ const ConversionsPage = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">My Conversions</h1>
+        <h1 className="text-3xl font-bold">Conversions</h1>
         <button
           className={`px-4 py-2 rounded font-medium ${
             showForm ? 'bg-gray-500 text-white' : 'bg-blue-500 text-white'

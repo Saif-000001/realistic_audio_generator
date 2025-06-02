@@ -1,4 +1,3 @@
-// src/components/Conversion/ConversionList.jsx
 import { useState, useEffect } from 'react';
 import { getConversions } from '../../services/conversionService';
 import ConversionCard from './ConversionCard';
@@ -89,6 +88,19 @@ const ConversionList = () => {
 
   return (
     <div>
+       <div className="flex justify-between items-center mb-6">
+        <p className="text-sm text-gray-600">
+          {conversions.length} conversion{conversions.length !== 1 ? 's' : ''} found
+        </p>
+        
+        <button
+          onClick={handleRetry}
+          className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors"
+          aria-label="Refresh conversions list"
+        >
+          Refresh
+        </button>
+      </div>
       <div className="grid gap-6 md:grid-cols-2">
         {conversions.map((conversion) => (
           <ConversionCard

@@ -38,4 +38,3 @@ ALLOWED_ORIGINS = [
 # Device settings
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-# DEVICE = "cuda" if os.getenv("USE_CUDA", "0") == "1" else "cpu"

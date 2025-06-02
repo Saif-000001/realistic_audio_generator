@@ -1,4 +1,3 @@
-// src/services/conversionService.js
 import api from './api.js';
 
 export const getConversions = async () => {
@@ -18,7 +17,6 @@ export const deleteConversion = async (id) => {
 
 export const downloadAudio = (id) => {
   const token = localStorage.getItem('token');
-
   const baseUrl = api.defaults.baseURL;
   const downloadUrl = `${baseUrl}/convert/${id}/download`;
   
@@ -54,6 +52,90 @@ export const downloadAudio = (id) => {
     return null; 
   } else {
     return downloadUrl;
+  }
+};
+
+// Get audio URL for streaming/playing in web players
+export const getAudioUrl = (id) => {
+  const baseUrl = api.defaults.baseURL;
+  return `${baseUrl}/convert/${id}/download`;
+};
+
+// Stream audio with authentication headers (for use with audio elements)
+export const getAudioBlob = async (id) => {
+  const token = localStorage.getItem('token');
+  const baseUrl = api.defaults.baseURL;
+  const audioUrl = `${baseUrl}/convert/${id}/download`;
+  
+  try {
+    const response = await fetch(audioUrl, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
+  } catch (error) {
+    console.error('Failed to fetch audio:', error);
+    throw error;
+  }
+};
+
+// Play audio directly in the browser
+export const playAudio = async (id) => {
+  try {
+    const audioUrl = await getAudioBlob(id);
+    const audio = new Audio(audioUrl);
+    
+    // Optional: Add event listeners for audio events
+    audio.addEventListener('loadstart', () => console.log('Loading started'));
+    audio.addEventListener('canplay', () => console.log('Can start playing'));
+    audio.addEventListener('ended', () => {
+      URL.revokeObjectURL(audioUrl); // Clean up the blob URL
+    });
+    
+    await audio.play();
+    return audio;
+  } catch (error) {
+    console.error('Failed to play audio:', error);
+    throw error;
+  }
+};
+
+// Get audio stream for HTML audio elements with proper authentication
+export const createAuthenticatedAudioSrc = async (id) => {
+  try {
+    const audioUrl = await getAudioBlob(id);
+    return audioUrl;
+  } catch (error) {
+    console.error('Failed to create audio source:', error);
+    return null;
+  }
+};
+
+// Check if audio file exists and is accessible
+export const checkAudioAvailability = async (id) => {
+  const token = localStorage.getItem('token');
+  const baseUrl = api.defaults.baseURL;
+  const audioUrl = `${baseUrl}/convert/${id}/download`;
+  
+  try {
+    const response = await fetch(audioUrl, {
+      method: 'HEAD', // Only check headers, don't download content
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    return response.ok;
+  } catch (error) {
+    console.error('Failed to check audio availability:', error);
+    return false;
   }
 };
 

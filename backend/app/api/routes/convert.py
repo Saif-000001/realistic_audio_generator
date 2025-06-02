@@ -136,7 +136,7 @@ async def convert_text_to_audio(
         )
 
 
-@router.get("/", response_model=List[Conversion])
+@router.get("", response_model=List[Conversion])
 def list_conversions(
     skip: int = 0,
     limit: int = 100,
@@ -156,12 +156,12 @@ def get_conversion(
     """Get a specific conversion."""
     return conversion
 
-
 @router.get("/{conversion_id}/download")
 def download_audio(
-    conversion: Conversion = Depends(get_conversion_by_id)
+    conversion: Conversion = Depends(get_conversion_by_id),
+    inline: bool = False 
 ):
-    """Download the audio file for a conversion."""
+    """Download or stream the audio file for a conversion."""
     file_path = Path(conversion.audio_file_path)
     if not file_path.exists():
         raise HTTPException(
@@ -169,11 +169,57 @@ def download_audio(
             detail="Audio file not found"
         )
     
+    # Determine media type based on file extension
+    media_type = "audio/wav"  # default
+    if file_path.suffix.lower() == ".mp3":
+        media_type = "audio/mpeg"
+    elif file_path.suffix.lower() == ".ogg":
+        media_type = "audio/ogg"
+    elif file_path.suffix.lower() == ".m4a":
+        media_type = "audio/mp4"
+    
+    # Generate a clean filename
+    clean_filename = f"{conversion.file_name}_{conversion.id}{file_path.suffix}"
+    
     return FileResponse(
-        file_path, 
-        media_type="audio/wav", 
-        filename=file_path.name
+        file_path,
+        media_type=media_type,
+        filename=clean_filename,
+        # Use inline for streaming in browser, attachment for download
+        headers={"Content-Disposition": f"{'inline' if inline else 'attachment'}; filename={clean_filename}"}
     )
+
+@router.get("/{conversion_id}/stream")
+def stream_audio(
+    conversion: Conversion = Depends(get_conversion_by_id)
+):
+    """Stream audio file for web players."""
+    file_path = Path(conversion.audio_file_path)
+    if not file_path.exists():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Audio file not found"
+        )
+    
+    # Determine media type
+    media_type = "audio/wav"
+    if file_path.suffix.lower() == ".mp3":
+        media_type = "audio/mpeg"
+    elif file_path.suffix.lower() == ".ogg":
+        media_type = "audio/ogg"
+    elif file_path.suffix.lower() == ".m4a":
+        media_type = "audio/mp4"
+    
+    return FileResponse(
+        file_path,
+        media_type=media_type,
+        headers={
+            "Content-Disposition": "inline",
+            "Accept-Ranges": "bytes",  # Enable range requests for better streaming
+            "Cache-Control": "public, max-age=3600"  # Cache for 1 hour
+        }
+    )
+
 
 
 @router.delete("/{conversion_id}", status_code=status.HTTP_204_NO_CONTENT)

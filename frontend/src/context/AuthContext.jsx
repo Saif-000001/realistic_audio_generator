@@ -9,47 +9,82 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (token) {
-      // Get user info from token or API if needed
-      setUser({ username: localStorage.getItem('username') });
-    }
-    setLoading(false);
+    const initializeAuth = () => {
+      try {
+        if (token) {
+          // Get user info from localStorage
+          const username = localStorage.getItem('username');
+          if (username) {
+            setUser({ username });
+          } else {
+            // If token exists but no username, clear invalid state
+            logout();
+          }
+        }
+      } catch (error) {
+        console.error('Error initializing auth:', error);
+        logout();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeAuth();
   }, [token]);
 
   const login = async (credentials) => {
     try {
+      setLoading(true);
       const data = await loginApi(credentials);
-      localStorage.setItem('token', data.access_token);
-      localStorage.setItem('username', credentials.username);
-      setToken(data.access_token);
-      setUser({ username: credentials.username });
-      return { success: true };
+      
+      if (data.access_token) {
+        localStorage.setItem('token', data.access_token);
+        localStorage.setItem('username', credentials.username);
+        setToken(data.access_token);
+        setUser({ username: credentials.username });
+        return { success: true };
+      } else {
+        throw new Error('No access token received');
+      }
     } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.detail || 'Login failed' 
+      console.error('Login error:', error);
+      return {
+        success: false,
+        error: error.response?.data?.detail || error.message || 'Login failed'
       };
+    } finally {
+      setLoading(false);
     }
   };
 
   const register = async (userData) => {
     try {
+      setLoading(true);
       const data = await registerApi(userData);
       return { success: true, data };
     } catch (error) {
-      return { 
+      console.error('Registration error:', error);
+      return {
         success: false,
-
-        error: error.response?.data?.detail || 'Registration failed' 
+        error: error.response?.data?.detail || error.message || 'Registration failed'
       };
+    } finally {
+      setLoading(false);
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    setToken(null);
-    setUser(null);
+    try {
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      setToken(null);
+      setUser(null);
+    } catch (error) {
+      console.error('Error during logout:', error);
+      // Still clear state even if localStorage fails
+      setToken(null);
+      setUser(null);
+    }
   };
 
   const value = {
@@ -59,12 +94,22 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    isAuthenticated: !!token
+    isAuthenticated: !!token && !!user
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
 
 export default AuthContext;
