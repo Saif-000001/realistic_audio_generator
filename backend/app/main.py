@@ -5,9 +5,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 
-from app.api.routes import auth_router, users_router, convert_router
-from app.config import ALLOWED_ORIGINS, APP_NAME
-from app.database import Base, engine
+from .api.routes import auth_router, users_router, convert_router
+from .config import ALLOWED_ORIGINS, APP_NAME
+from .database import Base, engine
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
