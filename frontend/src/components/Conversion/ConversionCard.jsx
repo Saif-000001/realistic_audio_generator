@@ -117,14 +117,12 @@ const ConversionCard = ({ conversion, onDelete, onError }) => {
     }
   }, [isAuthenticated, conversion?.id, conversion?.file_name, onError]);
 
-  /**
-   * Formats date for display
-   */
-  const formatDate = useCallback((dateString) => {
+    const formatDate = useCallback((dateString) => {
     if (!dateString) return 'Unknown date';
-    
+
     try {
-      return new Date(dateString).toLocaleString('en-US', {
+      return new Date(dateString).toLocaleString('en-BD', {
+        timeZone: 'Asia/Dhaka',
         year: 'numeric',
         month: 'short',
         day: 'numeric',
@@ -135,6 +133,7 @@ const ConversionCard = ({ conversion, onDelete, onError }) => {
       return 'Invalid date';
     }
   }, []);
+
 
   // Early return for invalid conversion
   if (!conversion) {

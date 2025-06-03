@@ -4,5 +4,3 @@ temp
 app.db
 __pycache__
 
-Dockerfile
-.dockerignore

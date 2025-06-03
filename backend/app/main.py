@@ -34,12 +34,12 @@ app.include_router(auth_router, prefix=f"/auth", tags=["authentication"])
 app.include_router(users_router, prefix=f"/users", tags=["users"])
 app.include_router(convert_router, prefix=f"/convert", tags=["conversions"])
 
-frontend_path = Path(__file__).resolve().parent.parent / "frontend" / "dist"
-app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
+# frontend_path = Path(__file__).resolve().parent.parent / "frontend" / "dist"
+# app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
 
-@app.get("/")
-def serve_spa():
-    return FileResponse("frontend/dist/index.html")
+# @app.get("/")
+# def serve_spa():
+#     return FileResponse("frontend/dist/index.html")
 
 # Add this for Render deployment
 if __name__ == "__main__":
