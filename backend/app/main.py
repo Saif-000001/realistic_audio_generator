@@ -5,7 +5,6 @@ from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
-
 from app.api.routes import auth_router, users_router, convert_router
 from app.config import ALLOWED_ORIGINS, APP_NAME
 from app.database import Base, engine

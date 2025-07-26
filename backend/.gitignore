@@ -1,5 +1,14 @@
+__pycache__/*
+*.py[cod]
+*$py.class
+*.__pycache__
+__pycache__/statistics.cpython-310.pyc
+__pycache__/detection.cpython-310.pyc
+__pycache__/health.cpython-310.pyc
+__pycache__/__init__.cpython-310.pyc
 .venv
-temp
+*.temp
+temp/
 .env
 app.db
 __pycache__

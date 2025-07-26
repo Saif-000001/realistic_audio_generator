@@ -20,14 +20,11 @@ class ConversionInDBBase(ConversionBase):
     user_id: int
     audio_file_path: str
     created_at: datetime
-
     class Config:
         from_attributes = True
 
-
 class Conversion(ConversionInDBBase):
     pass
-
 
 class ConversionInDB(ConversionInDBBase):
     pass

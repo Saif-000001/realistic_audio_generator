@@ -1,15 +1,12 @@
 from typing import Optional
 from sqlalchemy.orm import Session
-
 from app.core.security import get_password_hash, verify_password
 from app.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
 from app.crud.base import CRUDBase
 
-
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     """CRUD operations for users."""
-    
     def create(self, db: Session, *, obj_in: UserCreate) -> User:
         """Create a new user with hashed password."""
         db_obj = User(
@@ -52,16 +49,13 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def is_active(self, user: User) -> bool:
         """Check if a user is active."""
         return user.is_active
-
-
+        
 user = CRUDUser(User)
-
 
 # Simplified functions for use with authentication
 def get_user_by_username(db: Session, username: str) -> Optional[User]:
     """Get a user by username."""
     return user.get_by_username(db, username=username)
-
 
 def authenticate_user(db: Session, username: str, password: str) -> Optional[User]:
     """Authenticate a user."""

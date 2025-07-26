@@ -4,7 +4,6 @@ import ConversionForm from '../components/Conversion/ConversionForm';
 
 const ConversionsPage = () => {
   const [showForm, setShowForm] = useState(false);
-
   return (
     <div className="max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-8">
@@ -24,7 +23,6 @@ const ConversionsPage = () => {
           <ConversionForm />
         </div>
       )}
-
       <ConversionList />
     </div>
   );

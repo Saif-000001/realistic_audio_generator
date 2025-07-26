@@ -1,14 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-
 from app.core.auth import get_current_active_user
 from app.crud.user import user
 from app.database import get_db
 from app.models.user import User
 from app.schemas.user import User as UserSchema, UserUpdate
-
 router = APIRouter()
-
 
 @router.get("/me", response_model=UserSchema)
 def read_current_user(
@@ -16,7 +13,6 @@ def read_current_user(
 ):
     """Get current user info."""
     return current_user
-
 
 @router.put("/me", response_model=UserSchema)
 def update_current_user(
@@ -33,7 +29,6 @@ def update_current_user(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Email already registered"
             )
-    
     # Check if username is being updated and is already taken
     if user_in.username and user_in.username != current_user.username:
         db_user = user.get_by_username(db, username=user_in.username)
@@ -42,6 +37,5 @@ def update_current_user(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Username already taken"
             )
-    
     # Update user
     return user.update(db, db_obj=current_user, obj_in=user_in)

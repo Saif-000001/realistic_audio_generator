@@ -10,7 +10,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Application settings
-APP_NAME = "PDF/Image to Audio Converter"
+APP_NAME = "Realistic Audio Generator"
 # API_V1_STR = "/api/v1"
 
 # Security settings
@@ -33,7 +33,6 @@ AUDIO_DIR.mkdir(parents=True, exist_ok=True)
 ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
-
 
 # Device settings
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

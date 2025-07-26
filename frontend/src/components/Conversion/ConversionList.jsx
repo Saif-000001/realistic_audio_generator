@@ -64,7 +64,6 @@ const ConversionList = () => {
             </button>
           </div>
         </div>
-        
         <div className="mt-5 border-t border-red-300 pt-4">
           <h3 className="font-bold text-lg mb-2">Troubleshooting:</h3>
           <ul className="list-disc pl-5 space-y-1">

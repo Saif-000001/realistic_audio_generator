@@ -7,8 +7,8 @@ function Root() {
     <div className="relative min-h-screen overflow-x-hidden text-slate-50 antialiased bg-white">
       <Header />
       <Outlet />
+      <Footer />
     </div>
   );
 }
-
 export default Root;

@@ -1,14 +1,11 @@
 from typing import List
 from sqlalchemy.orm import Session
-
 from app.models.conversion import Conversion
 from app.schemas.conversion import ConversionCreate, ConversionUpdate
 from app.crud.base import CRUDBase
 
-
 class CRUDConversion(CRUDBase[Conversion, ConversionCreate, ConversionUpdate]):
     """CRUD operations for conversions."""
-    
     def create_with_owner(
     self, db: Session, *, obj_in: dict, user_id: int, audio_file_path: str
     ) -> Conversion:
@@ -34,6 +31,4 @@ class CRUDConversion(CRUDBase[Conversion, ConversionCreate, ConversionUpdate]):
             .limit(limit)
             .all()
         )
-
-
 conversion = CRUDConversion(Conversion)

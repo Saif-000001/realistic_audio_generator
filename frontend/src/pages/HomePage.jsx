@@ -4,7 +4,6 @@ import ConversionForm from '../components/Conversion/ConversionForm';
 
 const HomePage = () => {
   const { isAuthenticated } = useAuth();
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
@@ -29,7 +28,6 @@ const HomePage = () => {
                   <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
                     Convert text, PDFs, and images into high-quality audio files with our advanced AI technology. Perfect for accessibility, learning, and productivity.
                   </p>
-                  
                   <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-12">
                     <Link
                       to="/register"
@@ -50,7 +48,6 @@ const HomePage = () => {
                 </div>
               </div>
             </div>
-
             {/* Features Section */}
             <div className="m-16">
               <div className="text-center mb-12">
@@ -118,7 +115,6 @@ const HomePage = () => {
                 </div>
               </div>
             </div>
-
             {/* Stats Section */}
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-xl p-12 text-white text-center">
               <h2 className="text-3xl font-bold mb-8">Trusted by Thousands</h2>

@@ -2,10 +2,6 @@ import { useState, useCallback } from 'react';
 import { deleteConversion, downloadAudio } from '../../services/conversionService';
 import { useAuth } from '../../context/AuthContext';
 
-/**
- * ConversionCard Component
- * Displays conversion information with actions for download and delete
- */
 const ConversionCard = ({ conversion, onDelete, onError }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -13,11 +9,8 @@ const ConversionCard = ({ conversion, onDelete, onError }) => {
 
   // Constants
   const TEXT_PREVIEW_LENGTH = 150;
-  const DOWNLOAD_TIMEOUT = 30000; // 30 seconds
+  const DOWNLOAD_TIMEOUT = 30000;
 
-  /**
-   * Safely renders text content with truncation and null checks
-   */
   const renderTextContent = useCallback(() => {
     if (!conversion?.text_content?.trim()) {
       return (
@@ -70,14 +63,11 @@ const ConversionCard = ({ conversion, onDelete, onError }) => {
       onError?.('Please login to download audio files');
       return;
     }
-
     if (!conversion?.id) {
       onError?.('Invalid conversion data');
       return;
     }
-
     setIsDownloading(true);
-
     try {
       // Get the download URL/blob from the service
       const audioData = await downloadAudio(conversion.id);
@@ -91,18 +81,15 @@ const ConversionCard = ({ conversion, onDelete, onError }) => {
       } else {
         throw new Error('Invalid audio data received');
       }
-
       // Create temporary download link
       const link = document.createElement('a');
       link.href = downloadUrl;
       link.download = `${conversion.file_name || 'audio'}.mp3`;
       link.style.display = 'none';
-      
       // Trigger download
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
       // Clean up blob URL if created
       if (audioData instanceof Blob) {
         setTimeout(() => URL.revokeObjectURL(downloadUrl), 100);
@@ -134,26 +121,22 @@ const ConversionCard = ({ conversion, onDelete, onError }) => {
     }
   }, []);
 
-
   // Early return for invalid conversion
   if (!conversion) {
     return null;
   }
-
   const {
     file_name = 'Unnamed conversion',
     source_type = 'Unknown',
     language = 'Unknown',
     created_at
   } = conversion;
-
   return (
     <article className="bg-white rounded-lg shadow-md border border-gray-200 p-6 mb-4 transition-shadow hover:shadow-lg">
       <header className="mb-4">
         <h3 className="text-lg font-semibold text-gray-900 mb-2">
           {file_name}
         </h3>
-        
         <div className="flex flex-wrap gap-4 text-sm text-gray-600">
           <span className="flex items-center">
             <span className="font-medium">Type:</span>
@@ -161,7 +144,6 @@ const ConversionCard = ({ conversion, onDelete, onError }) => {
               {source_type}
             </span>
           </span>
-          
           <span className="flex items-center">
             <span className="font-medium">Language:</span>
             <span className="ml-1 px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
@@ -169,18 +151,15 @@ const ConversionCard = ({ conversion, onDelete, onError }) => {
             </span>
           </span>
         </div>
-        
         <time className="text-sm text-gray-500 mt-2 block">
           Created: {formatDate(created_at)}
         </time>
       </header>
-
       <section className="mb-4">
         <div className="bg-gray-50 border border-gray-200 p-4 rounded-md max-h-32 overflow-y-auto">
           {renderTextContent()}
         </div>
       </section>
-
       <footer className="flex justify-between items-center gap-3">
         <button
           onClick={handleDownload}
@@ -226,7 +205,6 @@ const ConversionCard = ({ conversion, onDelete, onError }) => {
             </>
           )}
         </button>
-
         <button
           onClick={handleDelete}
           disabled={isDeleting}
@@ -273,5 +251,4 @@ const ConversionCard = ({ conversion, onDelete, onError }) => {
     </article>
   );
 };
-
 export default ConversionCard;

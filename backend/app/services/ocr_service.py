@@ -4,9 +4,8 @@ from pathlib import Path
 from functools import partial
 from concurrent.futures import ThreadPoolExecutor
 from typing import Tuple
-
 import easyocr
-import fitz  # PyMuPDF
+import fitz 
 import numpy as np
 from PIL import Image
 import io

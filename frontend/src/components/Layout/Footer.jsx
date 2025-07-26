@@ -1,40 +1,27 @@
-const Footer = () => {
+import { FaLocationDot } from 'react-icons/fa6';
+import { MdEmail } from 'react-icons/md';
+
+function Contact() {
+  const currentYear = new Date().getFullYear();
   return (
-    <footer className="bg-gray-100 text-gray-700 py-8 mt-16">
-      <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* About Section */}
-        <div>
-          <h2 className="text-lg font-semibold mb-2">About Us</h2>
-          <p className="text-sm">
-            We build tools and platforms to empower developers and businesses.
-          </p>
-        </div>
-
-        {/* Links Section */}
-        <div>
-          <h2 className="text-lg font-semibold mb-2">Quick Links</h2>
-          <ul className="text-sm space-y-1">
-            <li><a href="#" className="hover:text-blue-600">Home</a></li>
-            <li><a href="#" className="hover:text-blue-600">Services</a></li>
-            <li><a href="#" className="hover:text-blue-600">Blog</a></li>
-            <li><a href="#" className="hover:text-blue-600">Contact</a></li>
-          </ul>
-        </div>
-
-        {/* Contact Section */}
-        <div>
-          <h2 className="text-lg font-semibold mb-2">Contact</h2>
-          <p className="text-sm">Email: support@example.com</p>
-          <p className="text-sm">Phone: +1 (555) 123-4567</p>
-        </div>
+    <div className="border-t border-stone-900 pb-5">
+      <h2 className="my-5 text-center text-slate-900 text-4xl">Get in Touch</h2>
+      <div className="text-center text-slate-900 tracking-tighter flex flex-col items-center">
+        <p className="my-4 flex items-center">
+          <FaLocationDot className="text-[#FF4F4F] mr-2" />
+          Barisal Sadar, Barisal, Bangladesh
+        </p>
+        <a
+          href={`mailto:dev.mdsaifulislam@gmail.com`}
+          className="my-4 flex items-center border-b"
+        >
+          <MdEmail className="text-[#2196F3] mr-2" />
+          dev.mdsaifulislam@gmail.com
+        </a>
+        <p>&copy; {currentYear} Saif. All rights reserved.</p>
       </div>
-
-      {/* Bottom Bar */}
-      <div className="mt-8 border-t pt-4 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} Your Company. All rights reserved.
-      </div>
-    </footer>
+    </div>
   );
-};
+}
 
-export default Footer;
+export default Contact;
